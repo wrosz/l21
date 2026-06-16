@@ -1,6 +1,6 @@
 import networkx as nx
-from variable_dictionary import variable_dictionary
-from utils.get_nodes_distance_2 import get_nodes_distance_2
+from src.variable_dictionary import variable_dictionary
+from src.utils.get_nodes_distance_2 import get_nodes_distance_2
 
 
 def every_vertex_has_color(var_dict: variable_dictionary) -> list[str]:
@@ -89,11 +89,15 @@ def generate_formulas(G: nx.Graph, k: int) -> list[str]:
     return formulas
 
 
-# test
-if __name__ == "__main__":
-    G = nx.Graph()
-    G.add_edges_from([(0, 1), (1, 2), (2, 3), (3, 0)])
-    k = 3
+def generate_formula_file(G: nx.Graph, k: int, file_path: str) -> None:
+    '''Generates a formula file in dimacs format that represents the conditions for a valid coloring of the graph.
+    Args:
+        G (nx.Graph): The graph for which to generate the formulas.
+        k (int): The number of colors to use for coloring the graph.
+        file_path (str): The path to the output file.'''
+    
     formulas = generate_formulas(G, k)
-    for formula in formulas:
-        print(formula)
+    with open(file_path, 'w') as f:
+        f.write(f"p cnf {len(G.nodes()) * k} {len(formulas)}\n")
+        for formula in formulas:
+            f.write(formula + '\n')
