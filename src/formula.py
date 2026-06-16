@@ -46,12 +46,16 @@ def colors_of_adjacent_vertices_differ_by_at_least_two(var_dict: variable_dictio
         for color in range(k):
             var1 = var_dict.get_variable_number(node1, color)
             var2 = var_dict.get_variable_number(node2, color)  # neighbor must not be the same color
-            var3 = var_dict.get_variable_number(node2, (color + 1) % k)  # neighbor must not be color + 1
-            var4 = var_dict.get_variable_number(node2, (color - 1) % k)  # neighbor must not be color - 1
-            formula1 = f"-{var1} -{var2} 0"
-            formula2 = f"-{var1} -{var3} 0"
-            formula3 = f"-{var2} -{var4} 0"
-            formulas.extend([formula1, formula2, formula3])
+            formula = f"-{var1} -{var2} 0"
+            formulas.append(formula)
+            if color >= 1:
+                var2 = var_dict.get_variable_number(node2, color - 1)  # neighbor must not be color - 1
+                formula = f"-{var1} -{var2} 0"
+                formulas.append(formula)
+            if color <= k - 2:
+                var2 = var_dict.get_variable_number(node2, color + 1)  # neighbor must not be color + 1
+                formula = f"-{var1} -{var2} 0"
+                formulas.append(formula)
     return formulas
         
 

@@ -9,6 +9,6 @@ def get_nodes_distance_2(G: nx.Graph, node: int) -> set[int]:
     for neighbor in neighbors:
         nodes_at_distance_2.update(G.neighbors(neighbor))
     nodes_at_distance_2.discard(node)
-    nodes_at_distance_2.discard(neighbors)
+    nodes_at_distance_2 -= neighbors
     return nodes_at_distance_2
 
