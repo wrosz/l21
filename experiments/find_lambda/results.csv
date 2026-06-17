@@ -1,4 +1,4 @@
-Number of nodes, Span, Time taken (seconds), Timeout happened
+Number of nodes, lambda_num, Time taken (seconds), Timeout happened
 5, 5, 0.0134, False
 10, 8, 0.0311, False
 15, 9, 0.1954, False

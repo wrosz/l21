@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
 from pathlib import Path
-BASE = r"experiments\find_span\detailed_results"
+BASE = r"experiments\find_lambda\detailed_results"
 NS   = [5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 100, 120, 150, 200, 250]
 frames = {}
 for n in NS:
@@ -15,7 +15,7 @@ for n in NS:
     df["sat"]     = df["Satisfiable"].astype(str).str.strip()
     df["k"]       = df["k"].astype(int)
     frames[n] = df.sort_values("k", ascending=False).reset_index(drop=True)
-def find_span(df):
+def find_lambda_num(df):
     sat_rows = df[(df["sat"] == "True") & (~df["timeout"])]
     return sat_rows["k"].min() if not sat_rows.empty else None
 ncols = 3
@@ -25,7 +25,7 @@ axes = axes.flatten()
 for i, n in enumerate(NS):
     ax   = axes[i]
     df   = frames[n]
-    span = find_span(df)
+    lambda_num = find_lambda_num(df)
     colors = []
     for _, row in df.iterrows():
         if row["timeout"]:
@@ -50,9 +50,9 @@ for i, n in enumerate(NS):
             sorted_times = non_timeout_times.sort_values(ascending=False)
             ymax = sorted_times.iloc[0] if len(sorted_times) == 1 else sorted_times.iloc[1]
             ax.set_ylim(0, ymax * 1.15)
-    if span is not None:
-        # znajdź pozycję x odpowiadającą span
-        ax.axvline(span, color="black", linewidth=1.2, linestyle="--", label=f"span={span}")
+    if lambda_num is not None:
+        # znajdź pozycję x odpowiadającą lambda_num
+        ax.axvline(lambda_num, color="black", linewidth=1.2, linestyle="--", label=f"$\\lambda$={lambda_num}")
         ax.legend(fontsize=7, loc="lower left")
     ax.set_title(f"n={n}", fontsize=10)
     ax.set_xlabel("k", fontsize=8)
@@ -67,7 +67,7 @@ legend_handles = [
 ]
 fig.legend(handles=legend_handles, loc="lower right", fontsize=9,
            bbox_to_anchor=(0.98, 0.01))
-fig.suptitle("Wyznaczanie spanu grafów Barabási–Albert — przebieg obliczeń", fontsize=13, y=1.01)
+fig.suptitle("Wyznaczanie $\\lambda$ dla grafów Barabási–Albert — przebieg obliczeń", fontsize=13, y=1.01)
 fig.tight_layout()
-fig.savefig(r"experiments\find_span\span_results.pdf", bbox_inches="tight")
-print("Zapisano: experiments\\find_span\\span_results.pdf")
+fig.savefig(r"experiments\find_lambda\lambda_results.pdf", bbox_inches="tight")
+print("Zapisano: experiments\\find_lambda\\lambda_results.pdf")

@@ -1,0 +1,7 @@
+n, k, Satisfiable, Time taken (seconds), Timeout happened
+5, 10, True, 0.0180, False
+5, 9, True, 0.0155, False
+5, 8, True, 0.0169, False
+5, 7, True, 0.0162, False
+5, 6, True, 0.0183, False
+5, 5, False, 0.0134, False

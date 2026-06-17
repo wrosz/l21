@@ -1,0 +1,19 @@
+n, k, Satisfiable, Time taken (seconds), Timeout happened
+200, 50, True, 0.0947, False
+200, 49, True, 0.0938, False
+200, 48, True, 0.0882, False
+200, 47, True, 0.0895, False
+200, 46, True, 0.0822, False
+200, 45, True, 0.0813, False
+200, 44, True, 0.0756, False
+200, 43, True, 0.0757, False
+200, 42, True, 0.0728, False
+200, 41, True, 0.0690, False
+200, 40, True, 0.0686, False
+200, 39, True, 0.0686, False
+200, 38, True, 0.0637, False
+200, 37, True, 0.0677, False
+200, 36, True, 0.0673, False
+200, 35, True, 0.0631, False
+200, 34, True, 2.7718, False
+200, 33, None, 120.0173, True

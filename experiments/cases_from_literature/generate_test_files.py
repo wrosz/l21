@@ -98,34 +98,34 @@ def generate_test_graph_files():
 def generate_dimacs_formulas():
     '''Generates test files for the formula generation.'''
 
-    # span is the minimum maximum label (starting from 0), so the minimum number of labels is span + 1, and the maximum unsatisfiable k is span
+    # lambda_num is the minimum maximum label (starting from 0), so the minimum number of labels is lambda_num + 1, and the maximum unsatisfiable k is lambda_num
 
     # 1: paths
-    # paths have span = 2 for P_2, span = 3 for P_3, and P_4, span = 4 for P_n, n >= 5
+    # paths have lambda_num = 2 for P_2, lambda_num = 3 for P_3, and P_4, lambda_num = 4 for P_n, n >= 5
     for length in PATH_LENGHTS:
         input_file_path = f"{TEST_INPUT_DIR}/path_{length}.txt"
         G = file_to_graph(input_file_path)
         if length == 2:
-            span = 2
+            lambda_num = 2
         elif length in [3, 4]:
-            span = 3
+            lambda_num = 3
         else:
-            span = 4
-        k_sat = span + 1  # k = span + 1 is satisfiable
-        k_unsat = span
+            lambda_num = 4
+        k_sat = lambda_num + 1  # k = lambda_num + 1 is satisfiable
+        k_unsat = lambda_num
         output_file_path_sat = f"{TEST_OUTPUT_DIR_SAT}/path_{length}_{k_sat}.dimacs"
         output_file_path_unsat = f"{TEST_OUTPUT_DIR_UNSAT}/path_{length}_{k_unsat}.dimacs"
         generate_formula_file(G, k_sat, output_file_path_sat)
         generate_formula_file(G, k_unsat, output_file_path_unsat)
 
     # 2: cycles
-    # cycles have span = 4 for all lengths
+    # cycles have lambda_num = 4 for all lengths
     for length in CYCLE_LENGTHS:
         input_file_path = f"{TEST_INPUT_DIR}/cycle_{length}.txt"
         G = file_to_graph(input_file_path)
-        span = 4
-        k_sat = span + 1
-        k_unsat = span
+        lambda_num = 4
+        k_sat = lambda_num + 1
+        k_unsat = lambda_num
         output_file_path_sat = f"{TEST_OUTPUT_DIR_SAT}/cycle_{length}_{k_sat}.dimacs"
         output_file_path_unsat = f"{TEST_OUTPUT_DIR_UNSAT}/cycle_{length}_{k_unsat}.dimacs"
         generate_formula_file(G, k_sat, output_file_path_sat)
@@ -133,7 +133,7 @@ def generate_dimacs_formulas():
 
 
     # 3: n-dimensional hypercube
-    # the n-dimensional hypercube has  n+3 <= span <= 2n+1 for all n >= 5
+    # the n-dimensional hypercube has  n+3 <= lambda_num <= 2n+1 for all n >= 5
     for dim in HYPERCUBE_DIMS:
         input_file_path = f"{TEST_INPUT_DIR}/hypercube_{dim}.txt"
         G = file_to_graph(input_file_path)
@@ -146,7 +146,7 @@ def generate_dimacs_formulas():
 
 
     # 4: random trees
-    # trees have max_degree + 1 <= span <= max_degree + 2
+    # trees have max_degree + 1 <= lambda_num <= max_degree + 2
     for num_nodes in RANDOM_TREE_SIZES:
         input_file_path = f"{TEST_INPUT_DIR}/random_tree_{num_nodes}.txt"
         G = file_to_graph(input_file_path)
@@ -159,7 +159,7 @@ def generate_dimacs_formulas():
         generate_formula_file(G, k_unsat, output_file_path_unsat)
     
     # 5: random regular graphs
-    # all graphs satisfy span <= max_degree^2 + 2 * max_degree, so d-regular graphs satisfy span <= d^2 + 2d
+    # all graphs satisfy lambda_num <= max_degree^2 + 2 * max_degree, so d-regular graphs satisfy lambda_num <= d^2 + 2d
     for num_nodes, degree in RANDOM_REGULAR_SIZES_AND_DEGREES:
         input_file_path = f"{TEST_INPUT_DIR}/random_regular_{num_nodes}_{degree}.txt"
         G = file_to_graph(input_file_path)
@@ -169,7 +169,7 @@ def generate_dimacs_formulas():
 
 
     # 6: incidence graph of projective plane of order 3
-    # incidence graph of projective plane of order n has span = n^2 + n
+    # incidence graph of projective plane of order n has lambda_num = n^2 + n
     input_file_path = f"{TEST_INPUT_DIR}/projective_plane_3.txt"
     G = file_to_graph(input_file_path)
     k_sat = 3 ** 2 + 3 + 1  # k = n^2 + n + 1 is satisfiable
