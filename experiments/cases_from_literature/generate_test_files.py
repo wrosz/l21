@@ -1,47 +1,60 @@
 import networkx as nx
+
+# set the project root to the parent directory of the src folder
+from pathlib import Path
+import sys
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(PROJECT_ROOT))
+
 from src.graph_parser import graph_to_file, file_to_graph
 from src.formula import generate_formula_file
+
+# lists of parameters for generating test graphs and formulas
+PATH_LENGHTS = [2, 3, 4, 5, 10, 15, 20, 50, 100, 200]
+CYCLE_LENGTHS = [3, 5, 10, 15, 20, 50, 100, 200]
+HYPERCUBE_DIMS = [5, 6, 7]
+RANDOM_TREE_SIZES = [4, 6, 8, 10, 15, 20, 50, 100, 200]
+RANDOM_REGULAR_SIZES_AND_DEGREES = [(6, 4), (10, 4), (15, 4), (16, 3), (20, 3), (20, 2), (50, 2), (100, 2), (200, 2)]
+
+# paths for input and output directories for test files
+TEST_INPUT_DIR = "experiments/cases_from_literature/test_files/input"
+TEST_OUTPUT_DIR_SAT = "experiments/cases_from_literature/test_files/dimacs_formulas/sat"
+TEST_OUTPUT_DIR_UNSAT = "experiments/cases_from_literature/test_files/dimacs_formulas/unsat"
 
 
 def generate_test_graph_files():
     '''Generates test files for the formula generation.'''
 
-    TEST_INPUT_DIR = "test_files/input"
-
-    # 1: paths of length 2, 3, 4, 5, 10
-    for length in [2, 3, 4, 5, 10]:
+    # 1: paths
+    for length in PATH_LENGHTS:
         G = nx.path_graph(length)
         input_file_path = f"{TEST_INPUT_DIR}/path_{length}.txt"
         graph_to_file(G, input_file_path)
 
-
-    # 2: cycles of length 3, 5, 10
-    for length in [3, 5, 10]:
+    # 2: cycles
+    for length in CYCLE_LENGTHS:
         G = nx.cycle_graph(length)
         input_file_path = f"{TEST_INPUT_DIR}/cycle_{length}.txt"
         graph_to_file(G, input_file_path)
 
-        
-    # 3: 5-dimensional hypercube
-    G = nx.hypercube_graph(5)
-    G = nx.convert_node_labels_to_integers(G)
-    input_file_path = f"{TEST_INPUT_DIR}/hypercube_5.txt"
-    graph_to_file(G, input_file_path)
+    # 3: n-dimensional hypercube
+    for dim in HYPERCUBE_DIMS:
+        G = nx.hypercube_graph(dim)
+        G = nx.convert_node_labels_to_integers(G)
+        input_file_path = f"{TEST_INPUT_DIR}/hypercube_{dim}.txt"
+        graph_to_file(G, input_file_path)
 
-
-    # 4: random trees with 4, 6, 8 nodes
-    for num_nodes in [4, 6, 8]:
+    # 4: random trees
+    for num_nodes in RANDOM_TREE_SIZES:
         G = nx.random_labeled_tree(num_nodes)
         input_file_path = f"{TEST_INPUT_DIR}/random_tree_{num_nodes}.txt"
         graph_to_file(G, input_file_path)
 
-
     # 5: random graphs d-regular graphs
-    for num_nodes, degree in [(4, 3), (6, 3), (10, 2), (15, 2)]:
+    for num_nodes, degree in RANDOM_REGULAR_SIZES_AND_DEGREES:
         G = nx.random_regular_graph(degree, num_nodes)
         input_file_path = f"{TEST_INPUT_DIR}/random_regular_{num_nodes}_{degree}.txt"
         graph_to_file(G, input_file_path)
-
 
     # 6: incidence graph of projective plane of order 3 (https://houseofgraphs.org/graphs/44089)
     adj_list = {
@@ -84,15 +97,12 @@ def generate_test_graph_files():
 
 def generate_dimacs_formulas():
     '''Generates test files for the formula generation.'''
-    TEST_INPUT_DIR = "test_files/input"
-    TEST_OUTPUT_DIR_SAT = "test_files/dimacs_formulas/sat"
-    TEST_OUTPUT_DIR_UNSAT = "test_files/dimacs_formulas/unsat"
 
     # span is the minimum maximum label (starting from 0), so the minimum number of labels is span + 1, and the maximum unsatisfiable k is span
 
     # 1: paths
     # paths have span = 2 for P_2, span = 3 for P_3, and P_4, span = 4 for P_n, n >= 5
-    for length in [2, 3, 4, 5, 10]:
+    for length in PATH_LENGHTS:
         input_file_path = f"{TEST_INPUT_DIR}/path_{length}.txt"
         G = file_to_graph(input_file_path)
         if length == 2:
@@ -110,7 +120,7 @@ def generate_dimacs_formulas():
 
     # 2: cycles
     # cycles have span = 4 for all lengths
-    for length in [3, 5, 10]:
+    for length in CYCLE_LENGTHS:
         input_file_path = f"{TEST_INPUT_DIR}/cycle_{length}.txt"
         G = file_to_graph(input_file_path)
         span = 4
@@ -122,21 +132,22 @@ def generate_dimacs_formulas():
         generate_formula_file(G, k_unsat, output_file_path_unsat)
 
 
-    # 3: 5-dimensional hypercube
+    # 3: n-dimensional hypercube
     # the n-dimensional hypercube has  n+3 <= span <= 2n+1 for all n >= 5
-    input_file_path = f"{TEST_INPUT_DIR}/hypercube_5.txt"
-    G = file_to_graph(input_file_path)
-    k_sat = 2 * 5 + 1 + 1
-    k_unsat = 5 + 3
-    output_file_path_sat = f"{TEST_OUTPUT_DIR_SAT}/hypercube_5_{k_sat}.dimacs"
-    output_file_path_unsat = f"{TEST_OUTPUT_DIR_UNSAT}/hypercube_5_{k_unsat}.dimacs"
-    generate_formula_file(G, k_sat, output_file_path_sat)
-    generate_formula_file(G, k_unsat, output_file_path_unsat)
+    for dim in HYPERCUBE_DIMS:
+        input_file_path = f"{TEST_INPUT_DIR}/hypercube_{dim}.txt"
+        G = file_to_graph(input_file_path)
+        k_sat = 2 * dim + 1 + 1
+        k_unsat = dim + 3
+        output_file_path_sat = f"{TEST_OUTPUT_DIR_SAT}/hypercube_{dim}_{k_sat}.dimacs"
+        output_file_path_unsat = f"{TEST_OUTPUT_DIR_UNSAT}/hypercube_{dim}_{k_unsat}.dimacs"
+        generate_formula_file(G, k_sat, output_file_path_sat)
+        generate_formula_file(G, k_unsat, output_file_path_unsat)
 
 
     # 4: random trees
     # trees have max_degree + 1 <= span <= max_degree + 2
-    for num_nodes in [4, 6, 8]:
+    for num_nodes in RANDOM_TREE_SIZES:
         input_file_path = f"{TEST_INPUT_DIR}/random_tree_{num_nodes}.txt"
         G = file_to_graph(input_file_path)
         max_degree = max(dict(G.degree()).values())
@@ -149,7 +160,7 @@ def generate_dimacs_formulas():
     
     # 5: random regular graphs
     # all graphs satisfy span <= max_degree^2 + 2 * max_degree, so d-regular graphs satisfy span <= d^2 + 2d
-    for num_nodes, degree in [(4, 3), (6, 3), (10, 2), (15, 2)]:
+    for num_nodes, degree in RANDOM_REGULAR_SIZES_AND_DEGREES:
         input_file_path = f"{TEST_INPUT_DIR}/random_regular_{num_nodes}_{degree}.txt"
         G = file_to_graph(input_file_path)
         k_sat = degree ** 2 + 2 * degree + 1  # k = d^2 + 2d + 1 must be satisfiable

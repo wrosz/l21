@@ -3,10 +3,7 @@ import subprocess
 import os
 import time
 
-import subprocess
-import time
-
-def check_satisfiability(cnf_file, output_file=None, timeout=None):
+def check_satisfiability(cnf_file, path_to_varisat, output_file=None, timeout=None):
     if output_file is None:
         output_file = f"{cnf_file}.proof"
 
@@ -15,7 +12,7 @@ def check_satisfiability(cnf_file, output_file=None, timeout=None):
     try:
         result = subprocess.run(
             [
-                PATH_TO_VARISAT,
+                path_to_varisat,
                 '--proof', output_file,
                 '--proof-format', 'DRAT',
                 cnf_file
@@ -52,15 +49,14 @@ def main():
         try:
             if sat_file in sat_files:
                 cnf_file_path = os.path.join("test_files/dimacs_formulas/sat", sat_file)
-                output_file_path = os.path.join("proofs", f"sat_{sat_file}.proof")
                 should_be_satisfiable = True
             else:
                 cnf_file_path = os.path.join("test_files/dimacs_formulas/unsat", sat_file)
-                output_file_path = os.path.join("proofs", f"unsat_{sat_file}.proof")
                 should_be_satisfiable = False
-            satisfiable, elapsed_time = check_satisfiability(cnf_file_path, output_file_path, timeout=5)
+            output_file_path = os.path.join("proofs", f"{sat_file.split('.')[0]}.proof")
+            satisfiable, elapsed_time = check_satisfiability(cnf_file_path, PATH_TO_VARISAT, output_file_path, timeout=120)
             results.append((sat_file, satisfiable, elapsed_time, should_be_satisfiable))
-            print(f"File: {sat_file}, Satisfiable: {satisfiable}, Time taken: {elapsed_time:.4f} seconds")
+            print(f"File: {sat_file}, Satisfiable: {satisfiable}, Time taken: {elapsed_time:.4f} seconds, should be satisfiable: {should_be_satisfiable}")
         except Exception as e:
             print(f"Error occurred while checking file: {sat_file}, Error: {e}")
             errors.append((sat_file, str(e)))
