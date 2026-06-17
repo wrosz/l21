@@ -1,4 +1,4 @@
-File, Is satisfied, Proof Verified, Time taken (seconds), Did time out
+File, Proof Verified, Time taken (seconds), Did time out
 cycle_100_4.dimacs, True, 0.3743, False
 cycle_10_4.dimacs, True, 0.3439, False
 cycle_15_4.dimacs, True, 0.3922, False

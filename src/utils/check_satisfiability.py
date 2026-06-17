@@ -1,21 +1,17 @@
-PATH_TO_VARISAT = "varisat.exe"  # must be in the same directory as this script, or provide the correct path to the Varisat executable
 import subprocess
 import time
 
 def check_satisfiability(cnf_file, path_to_varisat, output_file=None, timeout=None):
     if output_file is None:
-        output_file = f"{cnf_file}.proof"
+        command = [path_to_varisat, cnf_file]
+    else:
+        command = [path_to_varisat, '--proof', output_file, '--proof-format', 'DRAT', cnf_file]
 
     time_start = time.time()
 
     try:
         result = subprocess.run(
-            [
-                path_to_varisat,
-                '--proof', output_file,
-                '--proof-format', 'DRAT',
-                cnf_file
-            ],
+            command,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,

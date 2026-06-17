@@ -56,8 +56,7 @@ def main():
         f.write("Number of nodes, Span, Time taken (seconds), Timeout happened\n")
         f.close()
     
-    #for n in [5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 100, 120, 150, 200, 250]:
-    for n in [200, 250]:
+    for n in [5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 100, 120, 150, 200, 250]:
         G = nx.barabasi_albert_graph(n, 2)
         formula_path_prefix = f"experiments/find_span/formulas/barabasi_albert_{n}"
         detailed_results_file_path = f"experiments/find_span/detailed_results/barabasi_albert_{n}.csv"

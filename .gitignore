@@ -10,4 +10,5 @@ experiments/cases_from_literature/test_files/proof_verification_errors.txt
 experiments/find_span/formulas/*
 experiments/find_span/detailed_results/*
 experiments/find_span/errors.txt
-
+build/
+dist/
