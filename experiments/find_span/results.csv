@@ -1,0 +1,14 @@
+Number of nodes, Span, Time taken (seconds), Timeout happened
+5, 5, 0.0134, False
+10, 8, 0.0311, False
+15, 9, 0.1954, False
+20, 12, 120.0338, True
+30, 12, 120.0221, True
+40, 16, 120.0356, True
+50, 14, 120.0286, True
+60, 14, 120.0283, True
+70, 22, 120.0305, True
+80, 19, 120.0357, True
+100, 23, 120.0232, True
+120, 23, 120.0324, True
+150, 31, 120.0354, True

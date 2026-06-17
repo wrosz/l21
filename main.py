@@ -2,11 +2,11 @@
 The program reads a graph from a file, generates the formulas for the graph coloring problem, and writes the formulas to an output file in dimacs format.
 
 Usage:
-    python main.py -i input_graph.txt -o output_formulas.dimacs -k 3
+    python main.py -i input_graph.txt -k 3 -o output_formulas.cnf 
 Arguments:
     -i, --input-file: Path to the input graph file.
-    -o, --output-file: Path to the output DIMACS file. Default is 'formulas.dimacs'.
-    -k, --num-colors: Number of colors.
+    -k, -n, --num-colors: Number of colors.
+    -o, --output-file: Path to the output DIMACS file. Default is 'formulas.cnf'.
 The input graph file should be in the following format:
 
 4 4
@@ -38,7 +38,7 @@ def main():
     parser.add_argument(
         '-o', '--output-file',
         type=str,
-        default='formulas.dimacs',
+        default='formulas.cnf',
         help='Output DIMACS file.'
     )
 

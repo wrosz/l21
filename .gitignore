@@ -6,3 +6,8 @@ experiments/cases_from_literature/proofs/*
 experiments/cases_from_literature/test_files/input/*
 experiments/cases_from_literature/test_files/dimacs_formulas/sat/*
 experiments/cases_from_literature/test_files/dimacs_formulas/unsat/*
+experiments/cases_from_literature/test_files/proof_verification_errors.txt
+experiments/find_span/formulas/*
+experiments/find_span/detailed_results/*
+experiments/find_span/errors.txt
+
