@@ -101,10 +101,12 @@ def main():
             is_satisfiable = check_satisfiability(args.output_file, PATH_TO_VARISAT, output_file=args.proof_output, timeout=args.solver_timeout)[0]
         except Exception as e:
             print(f"Error occurred while verifying the generated formula: {e}")
-        if is_satisfiable:
+        if is_satisfiable is True:
             print("The generated formula is satisfiable.")
-        else:
+        elif is_satisfiable is False:
             print("The generated formula is unsatisfiable.")
+        else:
+            print("Could not determine the satisfiability of the generated formula.")
 
 if __name__ == "__main__":
     main()
