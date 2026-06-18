@@ -30,7 +30,3 @@ class variable_dictionary:
         Args:
             node (int): The node for which to get the variable numbers.'''
         return [self.dict[(node, color)] for color in range(self.k)]
-    
-
-
-

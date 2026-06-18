@@ -55,7 +55,7 @@ def verify_proof(cnf_file, proof_file, timeout=120):
 
 def main():
     with open("experiments/cases_from_literature/proof_verification_results.csv", "w") as f:
-        f.write("File, Is satisfied, Proof Verified, Time taken (seconds), Did time out\n")
+        f.write("File, Proof Verified, Time taken (seconds), Did time out\n")
         f.close()
     
     for cnf_file in os.listdir(PATH_TO_UNSAT_FILES):

@@ -26,6 +26,10 @@ def enrich(df):
 def make_label(name):
     parts = name.rsplit("_", 2)
     if len(parts) == 3:
+        if 'regular' in parts[0]:
+            parts = name.rsplit("_", 3)
+            cls, size, deg, k = parts
+            return f"{cls}  n={size}  d={deg}  k={k}"
         cls, size, k = parts
         return f"{cls}  n={size}  k={k}"
     return name
@@ -87,7 +91,7 @@ drat = drat.merge(
     unsat[["name", "time"]].rename(columns={"time": "time_sat"}),
     on="name", how="left"
 )
-drat = drat[~drat["unverified"]].sort_values(["class", "time_drat"]).reset_index(drop=True)
+drat = drat[~drat["unverified"]].sort_values(["class", "time_sat"]).reset_index(drop=True)
 
 # ── wykres drat-trim: grouped bar ─────────────────────────────────────────────
 fig, ax = plt.subplots(figsize=(12, max(8, len(drat) * 0.5)))
